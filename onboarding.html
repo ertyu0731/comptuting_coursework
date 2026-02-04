@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Stride</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-light: #818cf8;
+            --secondary: #a855f7;
+            --bg-main: #f8fafc;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-main);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .onboarding-container {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            display: flex;
+            gap: 8px;
+            padding: 1.5rem 2rem;
+        }
+
+        .progress-segment {
+            flex: 1;
+            height: 4px;
+            background: var(--border);
+            border-radius: 4px;
+            transition: background 0.3s ease;
+        }
+
+        .progress-segment.active {
+            background: var(--primary);
+        }
+
+        /* Slides */
+        .slides-wrapper {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide {
+            display: none;
+            padding: 2rem;
+            text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .slide-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin: 0 auto 2rem;
+            color: white;
+        }
+
+        .slide-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+        }
+
+        .slide-subtitle {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        /* Features Grid */
+        .features-grid {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .feature-card {
+            background: var(--bg-main);
+            border-radius: 12px;
+            padding: 1.25rem;
+            text-align: center;
+            min-width: 110px;
+        }
+
+        .feature-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-name {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        /* Continue Button */
+        .btn-continue {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: calc(100% - 4rem);
+            margin: 0 2rem 2rem;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary), #4f46e5);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-continue:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        /* Slide specific content */
+        .task-preview {
+            background: var(--bg-main);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .task-fields {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+            text-align: left;
+        }
+
+        .task-field {
+            background: white;
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            border: 1px solid var(--border);
+        }
+
+        .task-field-label {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 0.25rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="onboarding-container">
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+            <div class="progress-segment active" data-slide="1"></div>
+            <div class="progress-segment" data-slide="2"></div>
+            <div class="progress-segment" data-slide="3"></div>
+            <div class="progress-segment" data-slide="4"></div>
+            <div class="progress-segment" data-slide="5"></div>
+        </div>
+
+        <div class="slides-wrapper">
+            <!-- Slide 1: Welcome -->
+            <div class="slide active" data-slide="1">
+                <div class="slide-icon">✦</div>
+                <h1 class="slide-title">Welcome to Stride</h1>
+                <p class="slide-subtitle">Your personal productivity companion</p>
+
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🎯</div>
+                        <div class="feature-name">Track Tasks</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔥</div>
+                        <div class="feature-name">Build Streaks</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📅</div>
+                        <div class="feature-name">Smart Planning</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 2: Tasks Overview -->
+            <div class="slide" data-slide="2">
+                <div class="slide-icon">📋</div>
+                <h1 class="slide-title">Manage Your Tasks</h1>
+                <p class="slide-subtitle">Add all your homework and assignments in one place</p>
+
+                <div class="task-preview">
+                    <div class="task-fields">
+                        <div class="task-field">
+                            <div class="task-field-label">Title</div>
+                            <div>What's the task?</div>
+                        </div>
+                        <div class="task-field">
+                            <div class="task-field-label">Subject</div>
+                            <div>Which class?</div>
+                        </div>
+                        <div class="task-field">
+                            <div class="task-field-label">Due Date</div>
+                            <div>When is it due?</div>
+                        </div>
+                        <div class="task-field">
+                            <div class="task-field-label">Priority</div>
+                            <div>How important?</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 3: Table View -->
+            <div class="slide" data-slide="3">
+                <div class="slide-icon">📊</div>
+                <h1 class="slide-title">Table of Tasks</h1>
+                <p class="slide-subtitle">See all your tasks organized in a clear table view</p>
+
+                <div class="task-preview">
+                    <table style="width: 100%; text-align: left; font-size: 0.875rem;">
+                        <tr style="color: var(--text-secondary);">
+                            <th style="padding: 0.5rem;">Title</th>
+                            <th style="padding: 0.5rem;">Subject</th>
+                            <th style="padding: 0.5rem;">Due</th>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.5rem;">Math HW</td>
+                            <td style="padding: 0.5rem;">Math</td>
+                            <td style="padding: 0.5rem;">Feb 5</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.5rem;">Essay Draft</td>
+                            <td style="padding: 0.5rem;">English</td>
+                            <td style="padding: 0.5rem;">Feb 7</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Slide 4: Schedule -->
+            <div class="slide" data-slide="4">
+                <div class="slide-icon">📅</div>
+                <h1 class="slide-title">Smart Schedule</h1>
+                <p class="slide-subtitle">We'll automatically create a study schedule for you</p>
+
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">⏰</div>
+                        <div class="feature-name">By Due Date</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔝</div>
+                        <div class="feature-name">By Priority</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <div class="feature-name">Auto-Sort</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 5: Get Started -->
+            <div class="slide" data-slide="5">
+                <div class="slide-icon">🚀</div>
+                <h1 class="slide-title">You're All Set!</h1>
+                <p class="slide-subtitle">Start adding your tasks and let Stride help you stay organized</p>
+
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">✅</div>
+                        <div class="feature-name">Add Tasks</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📈</div>
+                        <div class="feature-name">Track Progress</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🎯</div>
+                        <div class="feature-name">Get Things Done</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button class="btn-continue" onclick="nextSlide()">
+            <span id="btn-text">Continue</span>
+            <span>→</span>
+        </button>
+    </div>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 5;
+
+        function nextSlide() {
+            if (currentSlide < totalSlides) {
+                currentSlide++;
+                updateSlide();
+            } else {
+                // Go to main app
+                window.location.href = '/';
+            }
+        }
+
+        function updateSlide() {
+            // Update progress bar
+            document.querySelectorAll('.progress-segment').forEach((seg, idx) => {
+                if (idx < currentSlide) {
+                    seg.classList.add('active');
+                } else {
+                    seg.classList.remove('active');
+                }
+            });
+
+            // Update slides
+            document.querySelectorAll('.slide').forEach(slide => {
+                slide.classList.remove('active');
+            });
+            document.querySelector(`.slide[data-slide="${currentSlide}"]`).classList.add('active');
+
+            // Update button text
+            if (currentSlide === totalSlides) {
+                document.getElementById('btn-text').textContent = 'Get Started';
+            }
+        }
+    </script>
+</body>
+
+</html>

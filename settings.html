@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% block title %}Settings{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Settings</h1>
+        <p class="page-subtitle">Configure your available study time</p>
+    </div>
+</div>
+
+<div class="card" style="max-width: 600px;">
+    <div class="card-header">
+        <h3 class="card-title">⏰ Study Time Settings</h3>
+    </div>
+    <div class="card-body">
+        <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+            Set your available study hours so the scheduler knows when you can work on tasks.
+        </p>
+
+        <form id="settings-form">
+            <div class="form-group">
+                <label class="form-label" for="start_time">I start studying at:</label>
+                <input type="time" class="form-input" id="start_time"
+                    value="{{ settings.study_start_time if settings else '09:00' }}">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="end_time">I stop studying at:</label>
+                <input type="time" class="form-input" id="end_time"
+                    value="{{ settings.study_end_time if settings else '17:00' }}">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Days I don't study:</label>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem;">
+                    {% set days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] %}
+                    {% set excluded = (settings.excluded_days if settings else '')|default('', true) %}
+                    {% for day in days %}
+                    <label
+                        style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: var(--bg-main); border-radius: var(--radius-md); cursor: pointer;">
+                        <input type="checkbox" name="excluded_days" value="{{ day }}" {% if day in excluded %}checked{%
+                            endif %}>
+                        {{ day[:3] }}
+                    </label>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="margin-top: 1rem;">
+                Save Settings
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.getElementById('settings-form').addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        const excludedDays = [];
+        document.querySelectorAll('input[name="excluded_days"]:checked').forEach(cb => {
+            excludedDays.push(cb.value);
+        });
+
+        const data = {
+            study_start_time: document.getElementById('start_time').value,
+            study_end_time: document.getElementById('end_time').value,
+            excluded_days: excludedDays.join(',')
+        };
+
+        try {
+            const response = await fetch('/api/settings', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            if (response.ok) {
+                alert('Settings saved successfully!');
+            } else {
+                alert('Failed to save settings');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Failed to save settings');
+        }
+    });
+</script>
+{% endblock %}
