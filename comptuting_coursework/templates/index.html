@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Tasks for Today</h1>
+        <p class="page-subtitle">{{ "Today" }}'s scheduled tasks</p>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        {% if tasks %}
+        <div class="today-task-list">
+            {% for task in tasks %}
+            <div class="today-task-item">
+                <div>
+                    <div class="today-task-name">{{ task.title }}</div>
+                    <div class="today-task-subject">{{ task.subject or 'No subject' }}</div>
+                </div>
+                <span class="badge badge-{{ task.priority|lower }}"
+                    style="background: rgba(255,255,255,0.2); color: white;">
+                    {{ task.priority }}
+                </span>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <div class="empty-state-icon">🎉</div>
+            <div class="empty-state-title">No tasks for today!</div>
+            <p>You're all caught up. Check the Tasks tab to add new tasks.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Quick Links -->
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-top: 1.5rem;">
+    <a href="{{ url_for('tasks') }}" class="card" style="text-decoration: none; transition: var(--transition);">
+        <div class="card-body" style="text-align: center;">
+            <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">📋</div>
+            <h3 style="color: var(--text-primary); margin-bottom: 0.25rem;">View All Tasks</h3>
+            <p style="color: var(--text-secondary); font-size: 0.875rem;">Manage your task list</p>
+        </div>
+    </a>
+    <a href="{{ url_for('schedule') }}" class="card" style="text-decoration: none; transition: var(--transition);">
+        <div class="card-body" style="text-align: center;">
+            <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">📅</div>
+            <h3 style="color: var(--text-primary); margin-bottom: 0.25rem;">View Schedule</h3>
+            <p style="color: var(--text-secondary); font-size: 0.875rem;">See your study plan</p>
+        </div>
+    </a>
+    <a href="{{ url_for('settings') }}" class="card" style="text-decoration: none; transition: var(--transition);">
+        <div class="card-body" style="text-align: center;">
+            <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">⚙️</div>
+            <h3 style="color: var(--text-primary); margin-bottom: 0.25rem;">Settings</h3>
+            <p style="color: var(--text-secondary); font-size: 0.875rem;">Configure study time</p>
+        </div>
+    </a>
+</div>
+{% endblock %}

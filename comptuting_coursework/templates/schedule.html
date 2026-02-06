@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% block title %}Schedule{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Schedule</h1>
+        <p class="page-subtitle">Your auto-generated study schedule based on tasks</p>
+    </div>
+    <a href="{{ url_for('tasks') }}" class="btn btn-secondary">
+        ← Back to Tasks
+    </a>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">📅 Upcoming Tasks</h3>
+        <span style="color: var(--text-secondary); font-size: 0.875rem;">Sorted by due date & priority</span>
+    </div>
+    <div class="card-body">
+        {% if tasks %}
+        <div class="schedule-grid">
+            {% for task in tasks %}
+            <div class="schedule-item {{ task.priority|lower }}-priority">
+                <div class="schedule-item-title">{{ task.title }}</div>
+                <div class="schedule-item-meta">
+                    <span>📚 {{ task.subject or 'No subject' }}</span>
+                    <span>📅 {{ task.due_date or 'No due date' }}</span>
+                    <span>⏱️ {{ task.time_needed }} hour{% if task.time_needed != 1 %}s{% endif %}</span>
+                    <span class="badge badge-{{ task.priority|lower }}">{{ task.priority }}</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <div class="empty-state-icon">📅</div>
+            <div class="empty-state-title">No tasks to schedule</div>
+            <p>Add some tasks first, then come back here to see your schedule</p>
+            <a href="{{ url_for('tasks') }}" class="btn btn-primary" style="margin-top: 1rem;">
+                + Add Tasks
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% if tasks %}
+<!-- Schedule Summary -->
+<div class="card" style="margin-top: 1.5rem;">
+    <div class="card-header">
+        <h3 class="card-title">📊 Schedule Summary</h3>
+    </div>
+    <div class="card-body">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
+            <div>
+                <div style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.25rem;">Total Tasks
+                </div>
+                <div style="font-size: 2rem; font-weight: 700; color: var(--primary);">{{ tasks|length }}</div>
+            </div>
+            <div>
+                <div style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.25rem;">Total Hours
+                </div>
+                <div style="font-size: 2rem; font-weight: 700; color: var(--secondary);">
+                    {% set total_hours = tasks | map(attribute='time_needed') | sum %}
+                    {{ total_hours }}
+                </div>
+            </div>
+            <div>
+                <div style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.25rem;">High Priority
+                </div>
+                <div style="font-size: 2rem; font-weight: 700; color: var(--danger);">
+                    {{ tasks | selectattr('priority', 'equalto', 'High') | list | length }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
